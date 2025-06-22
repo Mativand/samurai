@@ -1,0 +1,60 @@
+services:
+  frontend:
+    container_name: samurai-frontend
+    image: samurai-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:${BACKEND_PORT}"
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    volumes:
+      - ./frontend:/app
+    networks:
+      - samurai-network
+
+  backend:
+    container_name: samurai-backend
+    image: samurai-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    environment:
+      BACKEND_PORT: ${BACKEND_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      BASE_URL: "http://localhost:${BACKEND_PORT}"
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    networks:
+      - samurai-network
+
+  db:
+    container_name: samurai-db
+    image: postgres:17
+    restart: on-failure:5
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    networks:
+      - samurai-network
+
+volumes:
+  pgdata:
+
+networks:
+  samurai-network:
