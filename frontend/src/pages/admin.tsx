@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
-import { apiRequest } from "@/lib/queryClient";
+import { queryClient, apiRequest, getQueryFn } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import Header from "@/components/header";
 import MediaManager from "@/components/media-manager";
@@ -47,11 +46,13 @@ export default function Admin() {
 
   const { data: adminNews, isLoading: newsLoading } = useQuery({
     queryKey: ["/api/admin/news"],
+    queryFn: getQueryFn({ on401: "returnNull" }),
     retry: false,
   });
 
   const { data: adminStats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/admin/stats"],
+    queryFn: getQueryFn({ on401: "returnNull" }),
     retry: false,
   });
 
@@ -170,7 +171,7 @@ export default function Admin() {
     );
   }
 
-  if (!(user as unknown)?.isAdmin) {
+  if (!(user as any)?.isAdmin) {
     return (
       <div className="min-h-screen bg-samurai-deep flex items-center justify-center">
         <Card className="samurai-card p-6">

@@ -1,5 +1,5 @@
 // Mock data for development/testing
-export const MOCK_ENABLED = process.env.NODE_ENV === 'development' && process.env.VITE_ENABLE_MOCKS === 'true';
+export const MOCK_ENABLED = true;
 
 // Mock data types
 export interface MockNewsArticle {
@@ -141,6 +141,13 @@ export const mockApiResponses = {
     email: "admin@academia-samurai.com",
     isAdmin: true,
     createdAt: "2024-01-01T00:00:00Z"
+  },
+  "/api/auth/user": {
+    id: 1,
+    username: "admin_user",
+    email: "admin@academia-samurai.com",
+    isAdmin: true,
+    createdAt: "2024-01-01T00:00:00Z"
   }
 };
 
@@ -151,7 +158,7 @@ export const mockDelay = (ms: number = 500) => new Promise(resolve => setTimeout
 export async function handleMockRequest(url: string, method: string = 'GET', data?: unknown) {
   await mockDelay();
   
-  const path = url.replace(/^https?:\/\/[^\/]+/, '');
+  const path = url.replace(/^https?:\/\/[^/]+/, '');
   
   switch (method) {
     case 'GET':
@@ -166,6 +173,9 @@ export async function handleMockRequest(url: string, method: string = 'GET', dat
       }
       if (path === '/api/user/profile') {
         return mockApiResponses['/api/user/profile'];
+      }
+      if (path === '/api/auth/user') {
+        return mockApiResponses['/api/auth/user'];
       }
       break;
       

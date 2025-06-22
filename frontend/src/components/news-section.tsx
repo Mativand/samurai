@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
 import ArticleMedia from "@/components/article-media";
 import { useLocale } from "@/contexts/LocaleContext";
+import { getQueryFn } from "@/lib/queryClient";
 
 export default function NewsSection() {
   const { t, locale } = useLocale();
   const { data: news, isLoading } = useQuery({
     queryKey: ["/api/news"],
+    queryFn: getQueryFn({ on401: "returnNull" }),
     retry: false,
   });
 

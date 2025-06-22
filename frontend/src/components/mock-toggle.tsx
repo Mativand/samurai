@@ -12,10 +12,10 @@ export default function MockToggle() {
 
   useEffect(() => {
     // Only show in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       setIsVisible(true);
       // Check if mocks are enabled via environment variable
-      setIsMockEnabled(process.env.VITE_ENABLE_MOCKS === 'true');
+      setIsMockEnabled(import.meta.env.VITE_ENABLE_MOCKS === 'true');
     }
   }, []);
 
