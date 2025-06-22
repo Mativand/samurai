@@ -1,21 +1,49 @@
-import './App.css'
+import { Switch, Route } from "wouter";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { LocaleProvider } from "@/contexts/LocaleContext";
+import { useAuth } from "@/hooks/useAuth";
+import Landing from "@/pages/landing";
+import Home from "@/pages/home";
+import Admin from "@/pages/admin";
+import Checkout from "@/pages/checkout";
+import NotFound from "@/pages/not-found";
+import MockToggle from "@/components/mock-toggle";
+
+function Router() {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  return (
+    <Switch>
+      {isLoading || !isAuthenticated ? (
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="/checkout" component={Checkout} />
+        </>
+      ) : (
+        <>
+          <Route path="/" component={Home} />
+          <Route path="/admin" component={Admin} />
+          <Route path="/checkout" component={Checkout} />
+        </>
+      )}
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
 
 function App() {
   return (
-    <div className="min-h-screen bg-samurai-deep flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="samurai-heading text-6xl text-samurai-gold mb-8 animate-blade-slash">
-          Academia Samurai
-        </h1>
-        <p className="text-white text-xl mb-8">
-          Welcome to the digital dojo
-        </p>
-        <button className="samurai-button">
-          Enter the Dojo
-        </button>
-      </div>
-    </div>
-  )
+    <LocaleProvider>
+      <TooltipProvider>
+        <div className="dark">
+          <Toaster />
+          <Router />
+          <MockToggle />
+        </div>
+      </TooltipProvider>
+    </LocaleProvider>
+  );
 }
 
-export default App
+export default App;
