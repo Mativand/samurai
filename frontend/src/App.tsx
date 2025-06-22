@@ -1,41 +1,20 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    fetch('http://localhost:4000/example')
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
-  }, []);
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+    <div className="min-h-screen bg-samurai-deep flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="samurai-heading text-6xl text-samurai-gold mb-8 animate-blade-slash">
+          Academia Samurai
+        </h1>
+        <p className="text-white text-xl mb-8">
+          Welcome to the digital dojo
         </p>
+        <button className="samurai-button">
+          Enter the Dojo
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
